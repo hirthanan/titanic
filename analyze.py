@@ -14,29 +14,44 @@ import pandas as pd
 # Set randomizer seed
 np.random.seed(0)
 
-def analyzer(data):
+def analyzer(train_x, train_y):
     clf = RandomForestClassifier()
+    #print train_x
+    clf.fit(train_x, train_y)
+    return clf
 
+def encode_gender(df):
+    for idx, row in df.iterrows():
+        if row['Sex'] == "male":
+            df.set_value(idx, 'Sex', 0)
+        elif row['Sex'] == "female":
+            df.set_value(idx, 'Sex', 1)
+    return df
 
-
-def handle_missing_vals (df):
-    del df['Age']
+def clean_data (df):
     del df['Cabin']
+    del df['Ticket']
+    del df['Name']
+
+    df = encode_gender(df)
+    print df.describe()
     return df
 
 if __name__ == "__main__":
     test_df = pd.read_csv('test.csv')
     train_df = pd.read_csv('train.csv')
 
-    print train_df['Survived']
-    # remove columns with missing data
-    train_df = handle_missing_vals(train_df)
+    # clean data and encode strings to numerical values
+
+    # comment for now test_df = clean_data(test_df)
+    train_df = clean_data(train_df)
+
+    #print train_df
+
+    test_x = test_df
 
     train_x = train_df.drop('Survived', axis=1)
     train_y = train_df['Survived']
 
-
-    analyzer(train_df)
-
-
-
+    # trained_rforest = analyzer(train_x, train_y)
+    #print trained_rforest
