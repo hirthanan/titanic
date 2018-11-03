@@ -1,2 +1,3 @@
-# titanic
-Uses machine learning models to determine whether a passenger survived.
+# Titanic
+
+Uses Random Forest classifier to determine whether a given passenger survived.
